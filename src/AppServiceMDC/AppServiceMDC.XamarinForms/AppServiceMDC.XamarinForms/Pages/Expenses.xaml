@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppServiceMDC.XamarinForms.Pages.Expenses"
+             Title="{Binding Title}">
+  <StackLayout Orientation="Vertical"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand">
+    <Button Text="Logout"
+            Command="{Binding LogOutCommand}" />
+    <Button Text="Add Expense"
+            Command="{Binding AddExpenseCommand}"></Button>
+    <ListView GroupDisplayBinding="{Binding Key}"
+              IsGroupingEnabled="True"
+              HasUnevenRows="True"
+              ItemsSource="{Binding ExpensesGrouped}"
+              IsPullToRefreshEnabled="True"
+              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+              RefreshCommand="{Binding LoadExpensesCommand}"
+              x:Name="ListViewExpenses">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <StackLayout Orientation="Horizontal">
+              <Label Text="{Binding DateIncurred}" HorizontalOptions="Start" />
+              <!--<Label Text="{Binding Category}" HorizontalOptions="Center "/>-->
+              <Label Text="{Binding Amount}" HorizontalOptions="End" />
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+    <StackLayout x:Name="OfflineStack" IsVisible="False">
+      <Label Text="No Connection - Offline Mode" HorizontalOptions="Center" VerticalOptions="Center" />
+    </StackLayout>
+    <StackLayout IsVisible="{Binding IsBusy}">
+      <ActivityIndicator IsRunning="{Binding IsBusy}" />
+      <Label Text="{Binding LoadingMessage}" HorizontalOptions="Center"></Label>
+    </StackLayout>
+  </StackLayout>
+</ContentPage>

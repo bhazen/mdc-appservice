@@ -1,0 +1,39 @@
+﻿
+
+<div ng-controller="expensesController as expenses">
+    <h1>Expenses For {{ vm.currentReport.employeeName }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date Incurred</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="expnese in vm.currentReport">
+                <td>08/24/2016</td>
+                <td>Training</td>
+                <td>$230.00</td>
+            </tr>
+        </tbody>
+    </table> 
+</div>
+
+
+@section scripts
+{
+    <script>
+        (function () {
+            var app = angular.module('mdc.expenses', []);
+
+            function ExpensesController() {
+                var vm = this;
+                vm.reports = [];
+            }
+
+            app.controller('expensesController', ExpensesController);
+        }());
+    </script>
+}

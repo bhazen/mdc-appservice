@@ -1,0 +1,18 @@
+namespace AppServiceMDC.MobileApp.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class AddEmployeeName : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.Expenses", "EmployeeName", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.Expenses", "EmployeeName");
+        }
+    }
+}

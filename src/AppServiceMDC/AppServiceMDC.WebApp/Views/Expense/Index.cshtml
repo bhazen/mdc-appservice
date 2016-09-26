@@ -1,0 +1,80 @@
+﻿
+
+<div ng-app="mdc.expenses" ng-controller="expensesController as expenses">
+    <h1>Expenses For {{ expenses.currentReport().EmployeeName }}</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date Incurred</th>
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="expense in expenses.currentReport().Expenses">
+            <td>{{ expense.DateIncurred | date : 'shortDate' }}</td>
+            <td>{{ expense.Category }}</td>
+            <td>{{ expense.Amount | currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <ul uib-pagination total-items="expenses.reports.length" ng-model="expenses.currentPage" items-per-page="1"></ul>
+</div>
+
+
+@section scripts
+{
+    <script>
+        (function() {
+            var app = angular.module('mdc.expenses', ['ui.bootstrap', 'ui.bootstrap.tpls']);
+
+            function ExpenseService($http) {
+                var baseUrl = '@ViewBag.BaseUrl';
+
+                return {
+                    getReports: getReports
+                }
+
+                function getReports() {
+                    return $http.get(baseUrl + '/api/expenses/last-month')
+                        .then(function(resp) {
+                            return resp.data;
+                        });
+                }
+
+            }
+
+            ExpenseService.$inject = ['$http'];
+            app.service('expenseService', ExpenseService);
+
+            function ExpensesController(expenseSerivce) {
+                var vm = this;
+                vm.reports = [];
+                vm.currentPage = 1;
+                vm.pageChanged = function() {
+
+                };
+
+                vm.currentReport = function() {
+                    var index = vm.currentPage - 1;
+                    var report = vm.reports[index];
+                    return report ||
+                    {
+                        EmployeeName: 'Not Available',
+                        Expenses: []
+                    };
+                };
+
+                expenseSerivce.getReports()
+                    .then(function(data) {
+                        vm.reports = data.ExpenseReports;
+                    });
+            }
+
+            ExpensesController.$inject = ['expenseService'];
+
+            app.controller('expensesController', ExpensesController);
+        }());
+    </script>
+}

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppServiceMDC.XamarinForms.Behaviors;assembly=AppServiceMDC.XamarinForms"
+             x:Class="AppServiceMDC.XamarinForms.Pages.AddExpense"
+             Title="{Binding Title}">
+  <ContentPage.Content>
+    <StackLayout Orientation="Vertical"
+                 HorizontalOptions="Center"
+                 VerticalOptions="Center">
+      <Label Text="Date" />
+      <DatePicker x:Name="Date"
+                  Date="{Binding Date}" />
+      <Label Text="Category" />
+      <Picker x:Name="CategoryPicker" 
+              SelectedIndex="{Binding CategoryIndex}" />
+      <Label Text="Amount" />
+      <Entry Text="{Binding Amount}"
+             Keyboard="Numeric">
+        <Entry.Behaviors>
+          <local:NumericValidationBehavior x:Name="NumberValidator" />
+        </Entry.Behaviors>
+      </Entry>
+      <Button Text="Submit"
+              Command="{Binding SubmitExpenseCommand}" />
+    </StackLayout>
+  </ContentPage.Content>
+</ContentPage>
