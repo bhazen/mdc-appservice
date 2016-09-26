@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+        "Post_Message": {
+            "inputs": {
+                "host": {
+                    "api": {
+                        "runtimeUrl": "https://logic-apis-northcentralus.azure-apim.net/apim/slack"
+                    },
+                    "connection": {
+                        "name": "@parameters('$connections')['slack']['connectionId']"
+                    }
+                },
+                "method": "post",
+                "path": "/chat.postMessage",
+                "queries": {
+                    "channel": "mdc",
+                    "icon_emoji": ":rage:",
+                    "text": "<!here> Reminder that expense reports are due Monday by 3 PM!\n",
+                    "username": "Expense Report Overlord"
+                }
+            },
+            "runAfter": {},
+            "type": "ApiConnection"
+        }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "parameters": {
+        "$connections": {
+            "defaultValue": {},
+            "type": "Object"
+        }
+    },
+    "triggers": {
+        "Recurrence": {
+            "recurrence": {
+                "frequency": "Month",
+                "interval": 1,
+                "startTime": "26 Aug 2016 15:00",
+                "timeZone": "Central Standard Time"
+            },
+            "type": "Recurrence"
+        }
+    }
+}
